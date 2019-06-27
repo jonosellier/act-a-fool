@@ -1,0 +1,169 @@
+{
+    "name": "Deck 1",
+    "cards": [
+        {
+            "category": "Last night was so wild",
+            "items": [
+                "Using a fake ID",
+                "Singing in an uber",
+                "Pregaming too hard",
+                "Making out in the club",
+                "Getting roofied",
+                "Drunk driving",
+                "Spilling drinks"
+            ]
+        },
+        {
+            "category": "I'm so embarrassed!",
+            "items": [
+                "Accidentally farting loudly",
+                "Peeing your pants",
+                "Running out of toilet paper in public"
+            ]
+        },
+        {
+            "category": "Impersonate the celebrity",
+            "items": [
+                "Micheal Jackson",
+                "Charlie Chaplain",
+                "Muhammad Ali",
+                "Marilyn Monroe",
+                "Queen Elizabeth",
+                "Freddie Mercury",
+                "Arnold Schwarzenegger",
+                "Stephen Hawking",
+                "Bill Cosby",
+                "Hitler",
+                "Salt Bae",
+                "Jesus",
+                "Connor McGreggor"
+            ]
+        },
+        {
+            "category": "Impersonate the character",
+            "items": [
+                "Superman",
+                "Tyrion Lannister",
+                "Walter White",
+                "Thanos",
+                "Joey (from Friends)",
+                "James Bond",
+                "Austin Powers",
+                "Dr Evil",
+                "King Arthur",
+                "Hulk"
+            ]
+        },
+        {
+            "category": "Iconic Movies",
+            "items": [
+                "Titanic",
+                "Tarzan"
+            ]
+        },
+        {
+            "category": "Animals",
+            "items": [
+                "Monkey",
+                "Dog",
+                "Cat",
+                "Snake",
+                "Bird",
+                "Ostrich",
+                "Turtle",
+                "Armadillo",
+                "Porcupine / Hedgehog",
+                "Rat",
+                "Fish",
+                "Dolphin",
+                "Sea Lion",
+                "Penguin"
+            ]
+        },
+        {
+            "category": "Stereotypes",
+            "items": [
+                "Frat Boy",
+                "Sorority Girl",
+                "Meathead",
+                "Nerd",
+                "Hipster",
+                "Old person",
+                "Alcoholic",
+                "Drug Addict",
+                "Stoner",
+                "Rave Goer"
+            ]
+        },
+        {
+            "category": "Countries and Regions",
+            "items": [
+                "The (Dirty) South",
+                "Caribbean",
+                "France",
+                "England",
+                "Brazil",
+                "Middle East"
+            ]
+        },
+        {
+            "category": "What I want to be when I grow up",
+            "items": [
+                "Astronaut",
+                "Soldier",
+                "Ballerina",
+                "Teacher",
+                "Samurai"
+            ]
+        },
+        {
+            "category": "Sports",
+            "items": [
+                "Soccer",
+                "American Football",
+                "Baseball",
+                "Cricket",
+                "Tennis",
+                "Bowling",
+                "Pole Vault",
+                "Running",
+                "Biking",
+                "Swimmming",
+                "Diving",
+                "Table Tennis",
+                "Car Racing",
+                "Rock Climbing",
+                "Dancing",
+                "E-Sports",
+                "MMA",
+                "Boxing"
+            ]
+        },
+        {
+            "category": "Expressions",
+            "items": [
+                "Hot as hell",
+                "Im going to kill you!",
+                "Yeet!",
+                "Stop hitting yourself"
+            ]
+        },
+        {
+            "category": "Memes",
+            "items": [
+                "Charlie bit my finger",
+                "Yeet",
+                "Here's the tea",
+                "Sips tea",
+                "Distracted boyfriend",
+                "Confused Fry",
+                "Arthur Clenched Fist",
+                "SpOnGeBoB SaRcAsM tExT",
+                "Grumpy Cat",
+                "Dame Tu Cosita",
+                "Slapping Button",
+                "Drake Approves/Disapproves"
+            ]
+        }
+    ]
+}
