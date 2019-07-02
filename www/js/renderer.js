@@ -1,5 +1,5 @@
 const render = {
-    card: async (title, content) => {
+    card: async(title, content) => {
         document.getElementById("appContent").innerHTML = `
         <div id="card">
             <h2>${title}</h2>
@@ -9,18 +9,18 @@ const render = {
         </div>`;
     },
 
-    cardBotomButton: async (title, content, bottomButtonContent) => {
+    cardBotomButton: async(title, content, bottomButtonContent) => {
         document.getElementById("appContent").innerHTML = `
         <div id="card">
             <h2>${title}</h2>
             <div id="drawContainer">
                 <div id="playerContainer">${content}</div>
-                <div class="bottom">${bottomButtonContent}</div>;
+                <div class="bottom">${bottomButtonContent}</div>
             </div>
         </div>`;
     },
 
-    menu: async (title, content) => {
+    menu: async(title, content) => {
         let menuItems = ``;
         content.forEach(element => {
             menuItems += `<div class="playerLabel"><button id="${
@@ -38,30 +38,30 @@ const render = {
     },
 
     timer: (tMax) => {
-        document.getElementById(
-            "appContent"
-        ).innerHTML = `<canvas id="cv" width=2500 height=2500>Unsupported</canvas>`;
+        document.getElementById('staticContent').style.display = 'none';
+        document.getElementById("appContent").innerHTML = `<canvas id="cv" width=2500 height=2500>Unsupported</canvas>`;
         let c = document.getElementById("cv");
         let canv = c.getContext("2d");
         canv.fillStyle = "#FFF";
-        let t = 0;
         const endTime = new Date().getTime() + tMax * 1000;
 
-        let timingFn = setInterval(function () {
-            canv.clearRect(0, 0, canv.width, canv.height);
+        let timingFn = setInterval(function() {
+            const curTime = new Date().getTime();
+            canv.clearRect(0, 0, 2500, 2500);
             canv.beginPath();
             canv.moveTo(1250, 1250);
-            canv.arc(1250, 1250, 1200, 0, Math.PI * 2 * (t++ / (tMax * 60)));
+            canv.arc(1250, 1250, 1200, 0, Math.PI * 2 * (0 - (endTime - curTime) / (tMax * 1000)), true);
             canv.lineTo(1250, 1250);
             canv.fill();
-            if (new Date().getTime() > endTime) {
+            if (curTime > endTime) {
                 clearInterval(timingFn);
+                document.getElementById('staticContent').style.display = 'block';
                 chooseWinner();
             }
         }, 1000 / 60);
     },
 
-    tallCard: async (title, content) => {
+    tallCard: async(title, content) => {
         document.getElementById("appContent").innerHTML = `
         <div id="card">
             <h2>${title}</h2>
@@ -76,9 +76,9 @@ const render = {
         <div id="playerContainer">
             <select class="gameSettings" id="gameType">
                 <option value="default" selected hidden disabled>Game Type</option>
+                <option value="50p">First to 50 points</option>
+                <option value="80p">First to 80 points</option>
                 <option value="100p">First to 100 points</option>
-                <option value="150p">First to 150 points</option>
-                <option value="200p">First to 200 points</option>
                 <option value="5t">5 turns each</option>
                 <option value="10t">10 turns each</option>
                 <option value="15t">15 turns each</option>
@@ -93,6 +93,66 @@ const render = {
         <div class="bottom">
             <button id="startBtn" style="background-color: #999">Add Players</button>
         </div>
-        `
+    `,
+        howToPlay: `
+    <h2>How to play</h2>
+    <div id="cardList">
+        <h2>1. New Turns</h2>
+        <div id="drawContainerTall">
+            <h3>Pass the phone to the player whose name comes up on the screen.</h3>
+        </div>
+    </div>
+    <div id="cardList">
+        <h2>2. The prompt</h2>
+        <div id="drawContainerTall">
+            <h3>Tell everyone the category at the top of the card. During the timer you will act out the thing that appears here but dont't tell anyone what it is.</h3>
+        </div>
+    </div>
+    <div id="cardList">
+        <h2>3. The timer</h2>
+        <div id="drawContainerTall">
+            <h3>Act out the thing on your card until someone guesses it or time runs out.</h3>
+        </div>
+    </div>
+    <div id="cardList">
+        <h2>4. Scoring</h2>
+        <div id="drawContainerTall">
+            <h3>Correct guess: +10 points to the person who guessed</h3>
+            <h3>Time ran out before a correct guess is made: -5 points to the actor</h3>
+        </div>
+    </div>
+    `
+    },
+    cardView: {
+        categories: async(deck) => {
+            let categoryHTML = ``;
+            deck.cards.forEach((card, i) => {
+                categoryHTML += `<div id="view${i}" class="cardViewContainer"><div class="rhs"><button id="edit${i}">&vellip;</button></div><p>${card.category}</p></div>`;
+            })
+            categoryHTML += `<div id="newCat" class="cardViewContainer"><p>Add New Category</p></div>`;
+            document.getElementById("appContent").innerHTML = `<h2>Browse Categories</h2>` + categoryHTML;
+        },
+        cards: async(cat) => {
+            let categoryHTML = ``;
+            cat.items.forEach((item, i) => {
+                categoryHTML += `<div id="view${i}" class="cardViewContainer cv-tall">${item}<div class="rhs"><button id="edit${i}">&vellip;</button></div></div>`;
+            })
+            categoryHTML += `<div id="newCat" class="cardViewContainer"><p>Add New Card</p></div>`;
+            document.getElementById("appContent").innerHTML = `<h2>${cat.category}</h2>` + categoryHTML;
+        },
+    },
+    static: {
+        default: () => {
+            document.getElementById(`pauseBtn`).style.display = 'block';
+            document.getElementById(`backBtn`).style.display = 'none';
+        },
+        backarrow: () => {
+            document.getElementById(`pauseBtn`).style.display = 'none';
+            document.getElementById(`backBtn`).style.display = 'block';
+        },
+        none: () => {
+            document.getElementById(`backBtn`).style.display = 'none';
+            document.getElementById(`pauseBtn`).style.display = 'none';
+        }
     }
 };

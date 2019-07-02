@@ -16,32 +16,100 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+var appState = {
+    players: undefined,
+    screen: undefined,
+    settings: undefined
+}
+
+const APP_STORAGE_KEY = 'jH0svSqpTO';
+
 var app = {
     // Application Constructor
-    initialize: function () {
+    initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+        document.addEventListener('pause', this.onPause.bind(this), false);
+        document.addEventListener('resume', this.onResume.bind(this), false);
+        document.addEventListener("backbutton", app.backButton, false);
+
     },
 
-    // deviceready Event Handler
-    //
-    // Bind any cordova events here. Common events are:
-    // 'pause', 'resume', etc.
-    onDeviceReady: function () {
+    backButton: function() {
+        switch (appState.screen.id) {
+            case "cardBrowser": //go back to previous screen
+                console.log(appState.screen.id)
+                app.run();
+                break;
+            case "howTo":
+                app.run();
+                break;
+            case "playerAdd":
+                showStartMenu();
+                break;
+            case "timer": //do nothing
+                break;
+            default:
+                togglePause();
+        }
+    },
+
+    onPause: function() {
+        appState.players = players;
+        appState.settings = settingsObject;
+        window.localStorage.setItem(APP_STORAGE_KEY, JSON.stringify(appState));
+    },
+
+    onResume: function() {
+        const storedState = window.localStorage.getItem(APP_STORAGE_KEY);
+
+        if (storedState) {
+            appState = JSON.parse(storedState);
+        }
+
+        players = appState.players;
+        settingsObject = appState.settings;
+
+        switch (appState.screen.id) {
+            case "cardBrowser":
+                app.run();
+                break;
+            case "mainMenu":
+                app.run();
+                break;
+            case "playerAdd":
+                app.run();
+                break;
+            case "card":
+                generateCard();
+                break;
+            case "player":
+                showTurn();
+                break;
+            case "timer":
+                resumeTimer();
+                break;
+        }
+    },
+
+    onDeviceReady: function() {
         this.receivedEvent('deviceready');
         xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function () {
+        xmlhttp.onreadystatechange = function() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 deck = JSON.parse(xmlhttp.responseText);
             }
         }
         xmlhttp.open("GET", "./decks/defaultDeck.json", true);
         xmlhttp.send();
-
+        document.getElementById(`pauseBtn`).addEventListener('click', togglePause, false);
+        document.getElementById(`backBtn`).addEventListener('click', app.backButton, false);
+        document.getElementById(`res`).addEventListener('click', togglePause, false)
+        document.getElementById(`end`).addEventListener('click', app.run, false)
         app.run();
     },
 
     // Update DOM on a Received Event
-    receivedEvent: function (id) {
+    receivedEvent: function(id) {
         var parentElement = document.getElementById(id);
         var listeningElement = parentElement.querySelector('.listening');
         var receivedElement = parentElement.querySelector('.received');
@@ -52,20 +120,28 @@ var app = {
         console.log('Received Event: ' + id);
     },
 
-    run: function () {
+    run: function() {
         settingsObject = {
             condition: 'turns',
             threshhold: 1,
             current: 0
         }
+        document.getElementById('pauseScreen').style.display = 'none'; //removes pause screen
         players = [];
         currPlayer = -1;
-        render.menu(`./img/bannerLogo.png`, [{ name: 'New Game', id: 'startGame' }])
-            .then(document.getElementById(`startGame`).addEventListener('click', showStartMenu, false));
+        render.menu(`./img/bannerLogo.png`, [{ name: 'New Game', id: 'startGame' }, { name: 'Deck Browser', id: 'viewBrowser' }, { name: 'How to Play', id: 'howTo' }])
+            .then(() => {
+                document.getElementById(`startGame`).addEventListener('click', showStartMenu, false);
+                document.getElementById(`viewBrowser`).addEventListener('click', startBrowser, false);
+                document.getElementById('howTo').addEventListener('click', showHowTo, false);
+                render.static.none();
+            });
+        render.static.default();
     }
 };
 
-var deck, players = new Array(), currPlayer, currDeck;
+var deck, players = new Array(),
+    currPlayer, currDeck;
 
 let settingsObject = {
     guessTime: 30,
@@ -76,17 +152,31 @@ let settingsObject = {
 
 app.initialize();
 
-function showStartMenu(){
+function showHowTo() {
+    appState.screen = { id: 'howTo', args: [] };
+    render.static.backarrow();
+    document.getElementById("appContent").innerHTML = render.content.howToPlay;
+}
+
+function startBrowser() {
+    appState.screen = { id: 'cardBrowser', args: [] };
+    render.static.backarrow();
+    render.cardView.categories(deck);
+}
+
+function showStartMenu() {
+    appState.screen = { id: "mainMenu", args: [] };
+    render.static.default();
     render.tallCard("Game Settings", render.content.gameSettings)
-        .then(function (){
+        .then(function() {
             document.getElementById(`startBtn`).addEventListener('click', getGameSettings, false);
             document.getElementById(`gameType`).addEventListener('change', validateSelection, false);
             document.getElementById(`guessTime`).addEventListener('change', validateSelection, false);
         });
 }
 
-function validateSelection(){
-    if(document.getElementById("gameType").selectedIndex != 0 && document.getElementById("guessTime").selectedIndex != 0){
+function validateSelection() {
+    if (document.getElementById("gameType").selectedIndex != 0 && document.getElementById("guessTime").selectedIndex != 0) {
         console.log("valid")
         document.getElementById("startBtn").style.backgroundColor = '#000';
         return true;
@@ -97,21 +187,21 @@ function validateSelection(){
     }
 }
 
-function getGameSettings(){
-    if(validateSelection()){
+function getGameSettings() {
+    if (validateSelection()) {
         let selectedType = document.getElementById("gameType").options[document.getElementById("gameType").selectedIndex].value;
-        switch(selectedType){
+        switch (selectedType) {
+            case "50p":
+                settingsObject.condition = 'points';
+                settingsObject.threshhold = 50;
+                break;
+            case "80p":
+                settingsObject.condition = 'points';
+                settingsObject.threshhold = 80;
+                break;
             case "100p":
                 settingsObject.condition = 'points';
                 settingsObject.threshhold = 100;
-                break;
-            case "150p":
-                settingsObject.condition = 'points';
-                settingsObject.threshhold = 150;
-                break;
-            case "200p":
-                settingsObject.condition = 'points';
-                settingsObject.threshhold = 200;
                 break;
             case "5t":
                 settingsObject.condition = 'turns';
@@ -132,14 +222,20 @@ function getGameSettings(){
 }
 
 function generateCard() {
-    var rand = Math.floor(Math.random() * deck.cards.length);
-    var rand2 = Math.floor(Math.random() * (deck.cards[rand].items.length))
+    const rand = Math.floor(Math.random() * deck.cards.length);
+    const rand2 = Math.floor(Math.random() * (deck.cards[rand].items.length))
+    appState.screen = { id: "card", args: [rand, rand2] };
     render.card(deck.cards[rand].category, deck.cards[rand].items[rand2])
         .then(document.getElementById('card').addEventListener(`click`, startTimer));
 }
 
 function startTimer() {
-    render.timer(5);
+    appState.screen = { id: "timer", args: [] }
+    render.timer(settingsObject.guessTime);
+}
+
+function resumeTimer() {
+    render.timerFrom(settingsObject.guessTime, (new Date().getTime() - appState.screen.args[0]));
 }
 
 function addPlayer() {
@@ -157,15 +253,14 @@ function removePlayer() {
 }
 
 function printPlayers() {
+    appState.screen = { id: "playerAdd", args: [] };
     let playerHTML = ``;
-    for (let i = 0; i < players.length; i++) playerHTML += `
-        <div class="playerLabel">
-            <button data-playerRef="${i}" id="removePlayer${i}" class="removePlayerBtn">${players[i].name}</button>
-        </div>`; //Loads HTML
+    for (let i = 0; i < players.length; i++) playerHTML += `<button data-playerRef="${i}" id="removePlayer${i}" class="removePlayerBtn">${players[i].name}</button>`; //Loads HTML
 
     const bottomHTML = `<input type="text" id="newPlayer"></input> <button class="inlineBtn" id="addPlayerBtn">Add</button><br><button id="startBtn">Start Game</button>`
 
-    render.cardBotomButton(`Players`, playerHTML, bottomHTML).then(function () {
+    render.static.backarrow();
+    render.cardBotomButton(`Players`, playerHTML, bottomHTML).then(function() {
         document.getElementById(`addPlayerBtn`).addEventListener('click', addPlayer);
         if (players.length >= 3) document.getElementById(`startBtn`).addEventListener('click', showTurn); //enabled
         else document.getElementById(`startBtn`).style.backgroundColor = `#999`; //disabled
@@ -174,20 +269,25 @@ function printPlayers() {
 }
 
 function showTurn() {
+    appState.screen = { id: "player", args: [currPlayer] };
     currPlayer++;
     currPlayer = currPlayer % players.length;
     if (currPlayer == players.length - 1) settingsObject.current++;
+    render.static.default();
     render.card("Next Player to Act", players[currPlayer].name)
         .then(document.getElementById("card").addEventListener(`click`, generateCard));
 }
 
 function chooseWinner() {
+    appState.screen = { id: "winner", args: [currPlayer] };
     let playerHTML = '';
     const bottomHTML = `<button id="startBtn">No One</button>`;
-    for (let i = 0; i < players.length; i++) if (i != currPlayer) playerHTML += `<div class="playerLabel"><button data-playerRef="${i}" id="choosePlayer${i}" class="removePlayerBtn">${players[i].name}</button></div>`; //Loads HTML    
+    for (let i = 0; i < players.length; i++)
+        if (i != currPlayer) playerHTML += `<div class="playerLabel"><button data-playerRef="${i}" id="choosePlayer${i}" class="removePlayerBtn">${players[i].name}</button></div>`; //Loads HTML    
     render.cardBotomButton('Who Won?', playerHTML, bottomHTML)
-        .then(function () {
-            for (let i = 0; i < players.length; i++) if (i != currPlayer) document.getElementById(`choosePlayer${i}`).addEventListener('click', incrementScore, false);
+        .then(function() {
+            for (let i = 0; i < players.length; i++)
+                if (i != currPlayer) document.getElementById(`choosePlayer${i}`).addEventListener('click', incrementScore, false);
             document.getElementById(`startBtn`).addEventListener('click', decrementCurrPlayerScore, false);
         });
 }
@@ -206,23 +306,27 @@ function decrementCurrPlayerScore() {
 }
 
 function showScores() {
+    appState.screen = { id: "player", args: [currPlayer] };
     console.log(settingsObject);
     console.log(gameOver(settingsObject));
     if (gameOver(settingsObject)) showFinalScore();
     else {
-        let playerHTML = ``;
-        for (let i = 0; i < players.length; i++) playerHTML += `<h5>${players[i].name}: ${players[i].score}</h5>`;
         const bottomHTML = `<button id="startBtn">Next Turn</button>`;
-        render.cardBotomButton(`Scores`, playerHTML, bottomHTML)
+        render.cardBotomButton(`Scores`, printScoreboard(), bottomHTML)
             .then(document.getElementById(`startBtn`).addEventListener('click', showTurn));
     }
 }
 
+function printScoreboard() {
+    let output = ``;
+    for (let i = 0; i < players.length; i++) output += `<h5>${players[i].name}: ${players[i].score}</h5>`;
+    return output;
+}
+
 function showFinalScore() {
-    let playerHTML = `<h5>Final Scores:<br></h5>`;
-    for (let i = 0; i < players.length; i++) playerHTML += `<h5>${players[i].name}: ${players[i].score}</h5>`;
+    appState.screen = { id: "mainMenu", args: [] };
     const bottomHTML = `<button id="startBtn">New Game</button>`;
-    render.cardBotomButton(`Game Over!`, playerHTML, bottomHTML)
+    render.cardBotomButton(`Game Over!`, `<h5>Final Scores:<br></h5>${printScoreboard()}`, bottomHTML)
         .then(document.getElementById(`startBtn`).addEventListener('click', app.run));
 }
 
@@ -232,11 +336,18 @@ function gameOver(settingsObj) {
             if (settingsObj.current >= settingsObj.threshhold) return true;
             break;
         case "points":
-            for (const player of players) if (player.score >= settingsObj.current) settingsObj.current = player.score;
+            for (const player of players)
+                if (player.score >= settingsObj.current) settingsObj.current = player.score;
             if (settingsObj.current >= settingsObj.threshhold) return true;
             break;
         default:
             return false;
     }
     return false;
+}
+
+function togglePause() {
+    let pauseScreen = document.getElementById('pauseScreen');
+    if (pauseScreen.style.display == 'none') pauseScreen.style.display = 'block';
+    else pauseScreen.style.display = 'none';
 }

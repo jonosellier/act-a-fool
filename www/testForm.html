@@ -18,8 +18,9 @@
     under the License.
 -->
 <html>
-    <head>
-        <!--
+
+<head>
+    <!--
         Customize this policy to fit your own app's needs. For more guidance, see:
             https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
         Some notes:
@@ -28,42 +29,56 @@
             * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
-        <meta name="format-detection" content="telephone=no">
-        <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=contain">
-        <link rel="stylesheet" type="text/css" href="css/index.css">
-        <title>Hello World</title>
-        <script>
-            
-        </script>
-    </head>
-    <body>
-        <div id="appContent">
-            <div id="card">
-                <h2>New Game</h2>
-                <div id="drawContainerTall" onload="validateSelection()">
-                    <div id="playerContainer">
-                        <select class="gameSettings" id="gameType" onchange="validateSelection()">
-                            <option value="default" selected hidden disabled>Game Type</option>
-                            <option value="100p">First to 100 points</option>
-                            <option value="150p">First to 150 points</option>
-                            <option value="200p">First to 200 points</option>
-                            <option value="5t">5 turns each</option>
-                            <option value="10t">10 turns each</option>
-                            <option value="15t">15 turns each</option>
-                        </select>
-                        <select class="gameSettings"id="guessTime" onchange="validateSelection()">
-                            <option value="default" selected hidden disabled>Time per Turn</option>
-                            <option value=30>30 seconds per turn</option>
-                            <option value=60>60 seconds per turn</option>
-                            <option value=90>90 seconds per turn</option>                                                          
-                        </select>
-                    </div>
-                    <div class="bottom">
-                        <button id="startBtn" style="background-color: #999">Add Players</button>
-                    </div>
-                </div>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=contain">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <title>Hello World</title>
+    <script>
+        function togglePause() {
+            let pauseScreen = document.getElementById('pauseScreen');
+            if (pauseScreen.style.display == 'none') pauseScreen.style.display = 'block';
+            else pauseScreen.style.display = 'none';
+        }
+    </script>
+</head>
+
+<body>
+    <div id="staticContent">
+        <button id="pauseBtn" onclick="togglePause()">&vellip;</button>
+        <div id="pauseScreen">
+            <button id="res" class="removePlayerBtn">Resume</button>
+            <button id="end" class="removePlayerBtn">End Game</button>
+        </div>
+    </div>
+    <div id="appContent">
+        <h2>How to play</h2>
+        <div id="cardList">
+            <h2>1. New Turns</h2>
+            <div id="drawContainerTall">
+                <h3>Pass the phone to the player whose name comes up on the screen.</h3>
             </div>
         </div>
-    </body>
+        <div id="cardList">
+            <h2>2. The prompt</h2>
+            <div id="drawContainerTall">
+                <h3>Tell everyone the category at the top of the card. During the timer you will act out the thing that appears here but dont't tell anyone what it is.</h3>
+            </div>
+        </div>
+        <div id="cardList">
+            <h2>3. The timer</h2>
+            <div id="drawContainerTall">
+                <h3>Act out the thing on your card until someone guesses it or time runs out.</h3>
+            </div>
+        </div>
+        <div id="cardList">
+            <h2>4. Scoring</h2>
+            <div id="drawContainerTall">
+                <h3>Correct guess: +10 points to the person who guessed</h3>
+                <h3>Time ran out before a correct guess is made: -5 points to the actor</h3>
+            </div>
+        </div>
+    </div>
+</body>
+
 </html>
