@@ -127,15 +127,16 @@ const render = {
         categories: async(deck) => {
             let categoryHTML = ``;
             deck.cards.forEach((card, i) => {
-                categoryHTML += `<div id="view${i}" class="cardViewContainer"><div class="rhs"><button id="edit${i}">&vellip;</button></div><p>${card.category}</p></div>`;
+                categoryHTML += `<div id="view${i}" class="cardViewContainer" data-cardRef="${i}"><div class="rhs"><button id="edit${i}">&vellip;</button></div><p>${card.category}</p></div>`;
             })
             categoryHTML += `<div id="newCat" class="cardViewContainer"><p>Add New Category</p></div>`;
             document.getElementById("appContent").innerHTML = `<h2>Browse Categories</h2>` + categoryHTML;
         },
         cards: async(cat) => {
+            console.log(cat);
             let categoryHTML = ``;
             cat.items.forEach((item, i) => {
-                categoryHTML += `<div id="view${i}" class="cardViewContainer cv-tall">${item}<div class="rhs"><button id="edit${i}">&vellip;</button></div></div>`;
+                categoryHTML += `<div id="view${i}" class="cardViewContainer cv-tall"><div class="rhs"><button id="edit${i}">&vellip;</button></div><p>${item}<p></div>`;
             })
             categoryHTML += `<div id="newCat" class="cardViewContainer"><p>Add New Card</p></div>`;
             document.getElementById("appContent").innerHTML = `<h2>${cat.category}</h2>` + categoryHTML;

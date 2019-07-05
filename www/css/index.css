@@ -1,3 +1,29 @@
+@font-face {
+    font-family: "MaterialDesignIcons";
+    src: url("/css/resources/materialicons-regular-webfont.ttf");
+}
+
+i.material-icons {
+    font-family: 'MaterialDesignIcons';
+    font-weight: normal;
+    font-style: normal;
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+    /* Support for IE. */
+    font-feature-settings: 'liga';
+}
+
 * {
     -webkit-tap-highlight-color: #00000000;
     /* make transparent link selection, adjust last value opacity 0 to 1.0 */
@@ -15,7 +41,7 @@ body {
     /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;
     /* prevent copy paste, to allow, change 'none' to 'text' */
-    font-size: 12px;
+    font-size: 0.75em;
     height: 100vh;
     margin: 0px;
     padding: 0px;
@@ -29,7 +55,7 @@ button {
 }
 
 h1 {
-    font-size: 24px;
+    font-size: 1.5em;
     font-weight: 400;
     margin: 0px;
     overflow: visible;
@@ -70,6 +96,7 @@ html {
     display: block;
     margin: 0;
     background-color: #202020;
+    -webkit-appearance: none;
 }
 
 canvas {
@@ -81,9 +108,9 @@ canvas {
 #card {
     position: absolute;
     top: 0;
-    right: 0;
-    bottom: 0;
     left: 0;
+    width: calc(100% - 40px);
+    height: calc(100% - 40px);
     background-color: #000;
     padding: 12px;
     border-radius: 8px;
@@ -106,25 +133,25 @@ canvas {
 
 h2 {
     font-family: "Arial", sans-serif;
-    font-size: 48px;
+    font-size: 4em;
     color: #ffffff;
     text-align: center;
     font-style: normal;
-    padding: 0px;
+    padding: 16px;
 }
 
 h3 {
     font-family: "Arial", sans-serif;
     color: #000000;
     text-align: center;
-    font-size: 36px;
+    font-size: 3em;
 }
 
 h4 {
     font-family: "Arial", sans-serif;
     color: #ffffff;
     text-align: center;
-    font-size: 36px;
+    font-size: 3em;
 }
 
 #drawContainer {
@@ -157,13 +184,14 @@ p {
     color: #FFF;
     padding: 0;
     margin: 0;
+    font-size: 1.5em;
 }
 
 h5 {
     font-family: "Arial", sans-serif;
     color: #000000;
     text-align: center;
-    font-size: 36px;
+    font-size: 3em;
     line-height: 0px;
 }
 
@@ -176,9 +204,9 @@ h5 {
 .inlineBtn {
     background-color: #000;
     color: #fff;
-    display: inline;
-    font-size: 20px;
-    min-width: 36px;
+    display: inline-block;
+    font-size: 1.5em;
+    width: 3em;
     height: 36px;
     border: 0;
     -webkit-box-shadow: none;
@@ -187,12 +215,15 @@ h5 {
 }
 
 input[type="text"] {
-    font-size: 24px;
+    font-size: 1.5em;
+    padding: 0;
+    margin: 0;
     height: 36px;
     border: 0;
     border-bottom-style: solid;
     border-bottom-color: #000;
     border-bottom-width: 2px;
+    width: auto;
 }
 
 #startBtn,
@@ -218,7 +249,7 @@ input[type="text"] {
     background-color: #202020;
     color: #fff;
     display: block;
-    font-size: 24px;
+    font-size: 1.5em;
     border: 1.5px solid #FFF;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -244,7 +275,7 @@ input[type="text"] {
     background-color: transparent;
     color: #fff;
     display: block;
-    font-size: 32px;
+    font-size: 2em;
     width: 64px;
     height: 64px;
     border: 0;
@@ -306,7 +337,7 @@ canvas {
 .banner-img {
     position: relative;
     top: 5%;
-    width: 100%;
+    width: 40%;
 }
 
 select {
@@ -352,9 +383,12 @@ select {
 
 #pauseBtn {
     background-color: #0000007e;
+    background-position: center;
+    background-size: 80% 80%;
+    background-repeat: no-repeat;
     color: #fff;
     display: block;
-    font-size: 32px;
+    font-size: 2.667em;
     width: 48px;
     height: 48px;
     border: 0;
@@ -363,14 +397,18 @@ select {
     border-radius: 16px;
     position: absolute;
     top: 12px;
-    right: 12px;
+    right: 14px;
 }
 
 #backBtn {
+    font-family: 'MaterialDesignIcons';
     background-color: #0000007e;
+    background-position: center;
+    background-size: 80% 80%;
+    background-repeat: no-repeat;
     color: #fff;
     display: block;
-    font-size: 32px;
+    font-size: 2.667em;
     width: 48px;
     height: 48px;
     border: 0;
@@ -379,14 +417,14 @@ select {
     border-radius: 16px;
     position: absolute;
     top: 12px;
-    left: 12px;
+    left: 14px;
 }
 
 #addBtn {
     background-color: #ffffff;
     color: #000000;
     display: block;
-    font-size: 48px;
+    font-size: 36px;
     width: 64px;
     height: 64px;
     border: 0;

@@ -36,6 +36,9 @@ var app = {
 
     backButton: function() {
         switch (appState.screen.id) {
+            case "catBrowser":
+                startBrowser();
+                break;
             case "cardBrowser": //go back to previous screen
                 console.log(appState.screen.id)
                 app.run();
@@ -86,7 +89,6 @@ var app = {
                 showTurn();
                 break;
             case "timer":
-                resumeTimer();
                 break;
         }
     },
@@ -161,13 +163,23 @@ function showHowTo() {
 function startBrowser() {
     appState.screen = { id: 'cardBrowser', args: [] };
     render.static.backarrow();
-    render.cardView.categories(deck);
+    render.cardView.categories(deck)
+        .then(deck.cards.forEach((card, i) => {
+            document.getElementById(`view${i}`).addEventListener('click', viewCat, false);
+        }));
+}
+
+function viewCat() {
+    const index = this.getAttribute("data-cardRef");
+    appState.screen = { id: 'catBrowser', args: [index] };
+    console.log(deck.cards[index]);
+    render.cardView.cards(deck.cards[index]);
 }
 
 function showStartMenu() {
     appState.screen = { id: "mainMenu", args: [] };
     render.static.default();
-    render.tallCard("Game Settings", render.content.gameSettings)
+    render.card("Game Settings", render.content.gameSettings)
         .then(function() {
             document.getElementById(`startBtn`).addEventListener('click', getGameSettings, false);
             document.getElementById(`gameType`).addEventListener('change', validateSelection, false);
@@ -232,24 +244,11 @@ function generateCard() {
 function startTimer() {
     appState.screen = { id: "timer", args: [] }
     render.timer(settingsObject.guessTime);
+    document.getElementById('cv').addEventListener('click', chooseWinner, false);
 }
 
 function resumeTimer() {
     render.timerFrom(settingsObject.guessTime, (new Date().getTime() - appState.screen.args[0]));
-}
-
-function addPlayer() {
-    players.push({ name: document.getElementById("newPlayer").value, score: 0 });
-    printPlayers();
-}
-
-function removePlayer() {
-    const index = this.getAttribute("data-playerRef");
-    console.log(index);
-    console.log(players);
-    players.splice(index, 1);
-    console.log(players);
-    printPlayers();
 }
 
 function printPlayers() {
@@ -263,7 +262,11 @@ function printPlayers() {
     render.cardBotomButton(`Players`, playerHTML, bottomHTML).then(function() {
         document.getElementById(`addPlayerBtn`).addEventListener('click', addPlayer);
         if (players.length >= 3) document.getElementById(`startBtn`).addEventListener('click', showTurn); //enabled
-        else document.getElementById(`startBtn`).style.backgroundColor = `#999`; //disabled
+        else {
+            document.getElementById(`startBtn`).style.backgroundColor = `#999`; //disabled
+            document.getElementById(`startBtn`).innerHTML = `${3-players.length} more players`;
+            if (players.length == 2) document.getElementById(`startBtn`).innerHTML = `${3-players.length} more player`;
+        }
         for (let i = 0; i < players.length; i++) document.getElementById(`removePlayer${i}`).addEventListener('click', removePlayer, false); //remove player
     });
 }
@@ -292,19 +295,6 @@ function chooseWinner() {
         });
 }
 
-function incrementScore() {
-    const index = this.getAttribute("data-playerRef");
-    players[index].score += 10;
-    showScores();
-}
-
-function decrementCurrPlayerScore() {
-    players[currPlayer].score -= 5;
-    if (players[currPlayer].score <= 0) players[currPlayer].score = 0;
-    console.log(players);
-    showScores();
-}
-
 function showScores() {
     appState.screen = { id: "player", args: [currPlayer] };
     console.log(settingsObject);
@@ -318,8 +308,9 @@ function showScores() {
 }
 
 function printScoreboard() {
+    const sortedPlayers = [...players].sort((a, b) => (a.score - b.score));
     let output = ``;
-    for (let i = 0; i < players.length; i++) output += `<h5>${players[i].name}: ${players[i].score}</h5>`;
+    for (let i = 0; i < sortedPlayers.length; i++) output += `<h5>${sortedPlayers[i].name}: ${sortedPlayers[i].score}</h5>`;
     return output;
 }
 
@@ -328,26 +319,4 @@ function showFinalScore() {
     const bottomHTML = `<button id="startBtn">New Game</button>`;
     render.cardBotomButton(`Game Over!`, `<h5>Final Scores:<br></h5>${printScoreboard()}`, bottomHTML)
         .then(document.getElementById(`startBtn`).addEventListener('click', app.run));
-}
-
-function gameOver(settingsObj) {
-    switch (settingsObj.condition) {
-        case "turns":
-            if (settingsObj.current >= settingsObj.threshhold) return true;
-            break;
-        case "points":
-            for (const player of players)
-                if (player.score >= settingsObj.current) settingsObj.current = player.score;
-            if (settingsObj.current >= settingsObj.threshhold) return true;
-            break;
-        default:
-            return false;
-    }
-    return false;
-}
-
-function togglePause() {
-    let pauseScreen = document.getElementById('pauseScreen');
-    if (pauseScreen.style.display == 'none') pauseScreen.style.display = 'block';
-    else pauseScreen.style.display = 'none';
 }

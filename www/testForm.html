@@ -45,37 +45,19 @@
 
 <body>
     <div id="staticContent">
-        <button id="pauseBtn" onclick="togglePause()">&vellip;</button>
+        <button id="pauseBtn" style="background-image: url('img/icons/dots.svg');"></button>
+        <button id="backBtn" style="background-image: url('img/icons/back.svg');"></button>
         <div id="pauseScreen">
             <button id="res" class="removePlayerBtn">Resume</button>
             <button id="end" class="removePlayerBtn">End Game</button>
         </div>
     </div>
     <div id="appContent">
-        <h2>How to play</h2>
-        <div id="cardList">
-            <h2>1. New Turns</h2>
-            <div id="drawContainerTall">
-                <h3>Pass the phone to the player whose name comes up on the screen.</h3>
-            </div>
-        </div>
-        <div id="cardList">
-            <h2>2. The prompt</h2>
-            <div id="drawContainerTall">
-                <h3>Tell everyone the category at the top of the card. During the timer you will act out the thing that appears here but dont't tell anyone what it is.</h3>
-            </div>
-        </div>
-        <div id="cardList">
-            <h2>3. The timer</h2>
-            <div id="drawContainerTall">
-                <h3>Act out the thing on your card until someone guesses it or time runs out.</h3>
-            </div>
-        </div>
-        <div id="cardList">
-            <h2>4. Scoring</h2>
-            <div id="drawContainerTall">
-                <h3>Correct guess: +10 points to the person who guessed</h3>
-                <h3>Time ran out before a correct guess is made: -5 points to the actor</h3>
+        <div id="card">
+            <h2>Players</h2>
+            <div id="drawContainer">
+                <div id="playerContainer"></div>
+                <div class="bottom"><input type="text" id="newPlayer"> <button class="inlineBtn" id="addPlayerBtn">Add</button><br><button id="startBtn" style="background-color: rgb(153, 153, 153);">3 more players</button></div>
             </div>
         </div>
     </div>

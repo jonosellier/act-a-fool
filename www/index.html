@@ -1,22 +1,4 @@
 <!DOCTYPE html>
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
 <html>
 
 <head>
@@ -34,6 +16,7 @@
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=contain">
     <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="css/fonts.css">
     <title>Act a Fool</title>
 </head>
 
@@ -43,8 +26,8 @@
         <button id="end" class="removePlayerBtn">End Game</button>
     </div>
     <div id="staticContent">
-        <button id="pauseBtn">&vellip;</button>
-        <button id="backBtn">&#x1F860;</button>
+        <button id="pauseBtn" style="background-image: url('img/icons/dots.svg');"></button>
+        <button id="backBtn" style="background-image: url('img/icons/back.svg');"></button>
     </div>
     <div id="appContent">
         <h1>Apache Cordova</h1>
@@ -55,6 +38,7 @@
     </div>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/helper.js"></script>
     <script type="text/javascript" src="js/renderer.js"></script>
 </body>
 
