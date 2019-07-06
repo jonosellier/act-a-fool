@@ -43,7 +43,11 @@ const render = {
         let c = document.getElementById("cv");
         let canv = c.getContext("2d");
         canv.fillStyle = "#FFF";
-        const endTime = new Date().getTime() + tMax * 1000;
+        let endTime = new Date().getTime() + tMax * 1000;
+
+        document.getElementById('cv').addEventListener('click', function() {
+            endTime = 0;
+        }, false);
 
         let timingFn = setInterval(function() {
             const curTime = new Date().getTime();

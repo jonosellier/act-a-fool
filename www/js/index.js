@@ -244,10 +244,6 @@ function generateCard() {
 function startTimer() {
     appState.screen = { id: "timer", args: [] }
     render.timer(settingsObject.guessTime);
-    document.getElementById('cv').addEventListener('click', function() {
-        document.getElementById('staticContent').style.display = 'block';
-        chooseWinner();
-    }, false);
 }
 
 function resumeTimer() {
