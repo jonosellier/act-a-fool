@@ -1,0 +1,13 @@
+{
+    "background_color": "#202020",
+    "description": "Charades-like game bast played with a few drinks",
+    "display": "fullscreen",
+    "icons": [{
+        "src": "img/logo.png",
+        "sizes": "694x694",
+        "type": "image/png"
+    }],
+    "name": "Act A Fool",
+    "short_name": "Act-A-Fool",
+    "start_url": "/index.html"
+}
