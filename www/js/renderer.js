@@ -116,7 +116,7 @@ const render = {
     <div id="cardList">
         <h2>2. The prompt</h2>
         <div id="drawContainerTall">
-            <h3>Tell everyone the category at the top of the card. During the timer you will act out the word of phrase that appears here but don't tell anyone what it is.</h3>
+            <h3>Tell everyone the category at the top of the card. During the timer you will act out the word or phrase that appears here but don't tell anyone what it is.</h3>
         </div>
     </div>
     <div id="cardList">
