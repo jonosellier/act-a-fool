@@ -43,8 +43,10 @@
     </script>
 </head>
 
-<body>
+<body onload="render.timer(10)">
     <div id="staticContent">
+        <audio id="ticker" src="audio/ticker.mp3" type="audio/mpeg" loop preload="auto">Your browser does not support the audio element.</audio>
+        <audio id="buzzer" src="audio/buzzer.mp3" type="audio/mpeg" preload="auto">Your browser does not support the audio element.</audio>
         <button id="pauseBtn" style="background-image: url('img/icons/dots.svg');"></button>
         <button id="backBtn" style="background-image: url('img/icons/back.svg');"></button>
         <div id="pauseScreen">
@@ -61,6 +63,10 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/helper.js"></script>
+    <script type="text/javascript" src="js/renderer.js"></script>
 </body>
 
 </html>

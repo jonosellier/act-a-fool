@@ -41,10 +41,12 @@ const render = {
         document.getElementById('staticContent').style.display = 'none';
         document.getElementById("appContent").innerHTML = `<canvas id="cv" width=2500 height=2500>Unsupported</canvas>`;
         let c = document.getElementById("cv");
+        const tick = document.getElementById("ticker");
+        const buzzer = document.getElementById("buzzer");
         let canv = c.getContext("2d");
         canv.fillStyle = "#FFF";
         let endTime = new Date().getTime() + tMax * 1000;
-
+        document.getElementById("ticker").play();
         document.getElementById('cv').addEventListener('click', function() {
             endTime = 0;
         }, false);
@@ -58,7 +60,9 @@ const render = {
             canv.lineTo(1250, 1250);
             canv.fill();
             if (curTime > endTime) {
+                tick.pause();
                 clearInterval(timingFn);
+                buzzer.play();
                 document.getElementById('staticContent').style.display = 'block';
                 chooseWinner();
             }
@@ -125,8 +129,10 @@ const render = {
             <h3>Time ran out before a correct guess is made: -5 points to the actor</h3>
         </div>
     </div>
-    `
+    `,
+        attributions: `` //TODO: add in
     },
+
     cardView: {
         categories: async(deck) => {
             let categoryHTML = ``;
@@ -146,6 +152,7 @@ const render = {
             document.getElementById("appContent").innerHTML = `<h2>${cat.category}</h2>` + categoryHTML;
         },
     },
+
     static: {
         default: () => {
             document.getElementById(`pauseBtn`).style.display = 'block';
