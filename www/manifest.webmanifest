@@ -1,7 +1,7 @@
 {
     "background_color": "#202020",
     "description": "Charades-like game bast played with a few drinks",
-    "display": "fullscreen",
+    "display": "standalone",
     "icons": [{
         "src": "img/logo.png",
         "sizes": "694x694",
