@@ -82,8 +82,9 @@ const render = {
     content: {
         gameSettings: `
         <div id="playerContainer">
+        <div class="select-container">
             <select class="gameSettings" id="gameType">
-                <option value="default" selected hidden disabled>Game Type</option>
+                <option value="default" selected hidden disabled>GAME TYPE</option>
                 <option value="50p">First to 50 points</option>
                 <option value="80p">First to 80 points</option>
                 <option value="100p">First to 100 points</option>
@@ -91,12 +92,14 @@ const render = {
                 <option value="10t">10 turns each</option>
                 <option value="15t">15 turns each</option>
             </select>
+        </div><div class="select-container">
             <select class="gameSettings"id="guessTime">
-                <option value="default" selected hidden disabled>Time per Turn</option>
+                <option value="default" selected hidden disabled>TIME PER TURN</option>
                 <option value=30>30 seconds per turn</option>
                 <option value=60>60 seconds per turn</option>
                 <option value=90>90 seconds per turn</option>                                                          
             </select>
+            </div>
         </div>
         <div class="bottom">
             <button id="startBtn" style="background-color: #999">Add Players</button>
