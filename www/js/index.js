@@ -23,6 +23,7 @@ var appState = {
 }
 
 const APP_STORAGE_KEY = 'jH0svSqpTO';
+const DECK_STORAGE_KEY = 'DB5hCWnujx';
 
 var app = {
     // Application Constructor
