@@ -32,7 +32,6 @@ var app = {
         document.addEventListener('pause', this.onPause.bind(this), false);
         document.addEventListener('resume', this.onResume.bind(this), false);
         document.addEventListener('backbutton', app.backButton, false);
-
     },
 
     backButton: function() {
