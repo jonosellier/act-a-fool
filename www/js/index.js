@@ -108,6 +108,7 @@ var app = {
         document.getElementById(`res`).addEventListener('click', togglePause, false);
         document.getElementById(`end`).addEventListener('click', app.run, false);
         document.getElementById(`fs`).addEventListener('click', app.toggleFullScreen, false);
+        app.initSW();
         app.run();
     },
 
@@ -121,6 +122,16 @@ var app = {
         receivedElement.setAttribute('style', 'display:block;');
 
         console.log('Received Event: ' + id);
+    },
+
+    initSW: function() {
+        // Check that service workers are supported
+        if ('serviceWorker' in navigator) {
+            // Use the window load event to keep the page load performant
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js');
+            });
+        }
     },
 
     run: function() {
