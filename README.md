@@ -8,4 +8,4 @@
 2. Visit the site http://localhost:portnumber
 
 ##### Trying the game out yourself
-[Hosted through Heroku](act-a-fool.herokuapp.com)
+[Hosted through Heroku](https://act-a-fool.herokuapp.com)
