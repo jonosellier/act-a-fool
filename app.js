@@ -6,4 +6,4 @@ app.use(express.static('www'))
 
 app.get('/', (req, res) => res.sendfile('./www/index.html'))
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => console.log(`App listening on port ${port}!`))
