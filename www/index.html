@@ -14,7 +14,7 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
-    <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=contain">
+    <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=contain, user-scalable=no">
     <meta name="theme-color" content="#202020">
     <link rel="stylesheet" type="text/css" href="css/index.css">
     <link rel="stylesheet" type="text/css" href="css/fonts.css">
@@ -23,22 +23,24 @@
 </head>
 
 <body>
-    <div id="pauseScreen">
-        <button id="res" class="removePlayerBtn">Resume</button>
-        <button id="end" class="removePlayerBtn">End Game</button>
-        <button id="fs" class="removePlayerBtn">Full Screen</button>
-    </div>
-    <div id="staticContent">
-        <audio id="ticker" src="audio/ticker.mp3" type="audio/mpeg" loop preload="auto">Your browser does not support the audio element.</audio>
-        <audio id="buzzer" src="audio/buzzer.mp3" type="audio/mpeg" preload="auto">Your browser does not support the audio element.</audio>
-        <button id="pauseBtn" style="background-image: url('img/icons/dots.svg');"></button>
-        <button id="backBtn" style="background-image: url('img/icons/back.svg');"></button>
-    </div>
-    <div id="appContent">
-        <h1>Apache Cordova</h1>
-        <div id="deviceready" class="blink">
-            <p class="event listening">Connecting to Device</p>
-            <p class="event received">Device is Ready</p>
+    <div class="gameLayer">
+        <div id="pauseScreen">
+            <button id="res" class="removePlayerBtn">Resume</button>
+            <button id="end" class="removePlayerBtn">End Game</button>
+            <button id="fs" class="removePlayerBtn">Full Screen</button>
+        </div>
+        <div id="staticContent">
+            <audio id="ticker" src="audio/ticker.mp3" type="audio/mpeg" loop preload="auto">Your browser does not support the audio element.</audio>
+            <audio id="buzzer" src="audio/buzzer.mp3" type="audio/mpeg" preload="auto">Your browser does not support the audio element.</audio>
+            <button id="pauseBtn" style="background-image: url('img/icons/dots.svg');"></button>
+            <button id="backBtn" style="background-image: url('img/icons/back.svg');"></button>
+        </div>
+        <div id="appContent">
+            <h1>Apache Cordova</h1>
+            <div id="deviceready" class="blink">
+                <p class="event listening">Connecting to Device</p>
+                <p class="event received">Device is Ready</p>
+            </div>
         </div>
     </div>
     <script type="text/javascript" src="cordova.js"></script>

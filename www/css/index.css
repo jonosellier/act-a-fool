@@ -50,6 +50,7 @@ i.material-icons {
 #appContent {
     width: 100%;
     height: 100%;
+    display: block;
     background-color: #202020;
 }
 
@@ -416,10 +417,13 @@ select::-ms-expand {
     display: none;
     position: fixed;
     z-index: 3;
-    width: 100%;
-    height: 100%;
     background-color: #000;
     padding-top: 20%;
+    width: 100%;
+    height: 100%;
+    padding: 5%;
+    margin: -5%;
+    border-radius: 5%;
 }
 
 #pauseScreen button {
@@ -481,4 +485,17 @@ select::-ms-expand {
     position: absolute;
     bottom: 12px;
     right: 12px;
+}
+
+.gameLayer {
+    width: 100%;
+    max-width: 600px;
+    height: 100%;
+    max-height: 900px;
+    position: fixed;
+    /* or absolute */
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
 }

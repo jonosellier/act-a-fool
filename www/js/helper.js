@@ -1,11 +1,13 @@
+// @author jonathan
 function gameOver(settingsObj) {
     switch (settingsObj.condition) {
-        case "turns":
+        case 'turns':
             if (settingsObj.current >= settingsObj.threshhold) return true;
             break;
-        case "points":
-            for (const player of players)
-                if (player.score >= settingsObj.current) settingsObj.current = player.score;
+        case 'points':
+            for (const player of players) {
+                if (player.score >= settingsObj.current) { settingsObj.current = player.score; }
+            }
             if (settingsObj.current >= settingsObj.threshhold) return true;
             break;
         default:
@@ -15,13 +17,13 @@ function gameOver(settingsObj) {
 }
 
 function togglePause() {
-    let pauseScreen = document.getElementById('pauseScreen');
+    const pauseScreen = document.getElementById('pauseScreen');
     if (pauseScreen.style.display == 'none') pauseScreen.style.display = 'block';
     else pauseScreen.style.display = 'none';
 }
 
 function incrementScore() {
-    const index = this.getAttribute("data-playerRef");
+    const index = this.getAttribute('data-playerRef');
     players[index].score += 10;
     showScores();
 }
@@ -34,12 +36,12 @@ function decrementCurrPlayerScore() {
 }
 
 function addPlayer() {
-    players.push({ name: document.getElementById("newPlayer").value, score: 0 });
+    players.push({ name: document.getElementById('newPlayer').value, score: 0 });
     printPlayers();
 }
 
 function removePlayer() {
-    const index = this.getAttribute("data-playerRef");
+    const index = this.getAttribute('data-playerRef');
     console.log(index);
     console.log(players);
     players.splice(index, 1);
