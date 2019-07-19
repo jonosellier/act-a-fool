@@ -24,6 +24,7 @@ var appState = {
 
 const APP_STORAGE_KEY = 'jH0svSqpTO';
 const DECK_STORAGE_KEY = 'DB5hCWnujx';
+const USER_DECK_STORAGE_KEY = 'NF32vEcNKL';
 
 var app = {
     // Application Constructor
@@ -36,6 +37,9 @@ var app = {
 
     backButton: function() {
         switch (appState.screen.id) {
+            case 'addCat':
+                startBrowser();
+                break;
             case 'catBrowser':
                 startBrowser();
                 break;
@@ -98,11 +102,14 @@ var app = {
         xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                deck = JSON.parse(xmlhttp.responseText);
+                localStorage.setItem(DECK_STORAGE_KEY, xmlhttp.responseText);
             }
         }
-        xmlhttp.open('GET', './decks/defaultDeck.json', true);
-        xmlhttp.send();
+        if (!localStorage.getItem(DECK_STORAGE_KEY)) {
+            console.log("No deck found downloading new deck");
+            xmlhttp.open('GET', './decks/defaultDeck.json', true);
+            xmlhttp.send();
+        }
         document.getElementById(`pauseBtn`).addEventListener('click', togglePause, false);
         document.getElementById(`backBtn`).addEventListener('click', app.backButton, false);
         document.getElementById(`res`).addEventListener('click', togglePause, false);
@@ -135,6 +142,7 @@ var app = {
     },
 
     run: function() {
+        deck = JSON.parse(localStorage.getItem(DECK_STORAGE_KEY)); //get the deck from localstorage
         settingsObject = {
             condition: 'turns',
             threshhold: 1,
@@ -143,11 +151,12 @@ var app = {
         document.getElementById('pauseScreen').style.display = 'none'; //removes pause screen
         players = [];
         currPlayer = -1;
-        render.menu(`./img/bannerLogo.png`, [{ name: 'New Game', id: 'startGame' }, { name: 'Deck Browser', id: 'viewBrowser' }, { name: 'How to Play', id: 'howTo' }])
+        render.menu(`./img/bannerLogo.png`, [{ name: 'New Game', id: 'startGame' }, { name: 'Deck Browser', id: 'viewBrowser' }, { name: 'How to Play', id: 'howTo' }, { name: 'Settings', id: 'settings' }])
             .then(() => {
                 document.getElementById(`startGame`).addEventListener('click', showStartMenu, false);
                 document.getElementById(`viewBrowser`).addEventListener('click', startBrowser, false);
                 document.getElementById('howTo').addEventListener('click', showHowTo, false);
+                document.getElementById('settings').addEventListener('click', showSettings, false);
                 render.static.none();
             });
         render.static.default();
@@ -175,7 +184,7 @@ var app = {
     }
 };
 
-var deck, players = new Array(),
+var deck, userDeck, players = new Array(),
     currPlayer, currDeck;
 
 let settingsObject = {
@@ -193,20 +202,71 @@ function showHowTo() {
     document.getElementById('appContent').innerHTML = render.content.howToPlay;
 }
 
+function showSettings() {
+    appState.screen = { id: 'howTo', args: [] };
+    render.static.backarrow();
+    document.getElementById('appContent').innerHTML = render.content.settings;
+    document.getElementById('reset').addEventListener('click', function() {
+        if (confirm("Are you sure you want to reset the entire deck?")) {
+            localStorage.removeItem(DECK_STORAGE_KEY)
+            window.location.replace("index.html");
+        }
+    }, false);
+}
+
 function startBrowser() {
     appState.screen = { id: 'cardBrowser', args: [] };
     render.static.backarrow();
     render.cardView.categories(deck)
-        .then(deck.cards.forEach((card, i) => {
-            document.getElementById(`view${i}`).addEventListener('click', viewCat, false);
-        }));
+        .then(function() {
+            deck.cards.forEach((card, i) => {
+                document.getElementById(`view${i}`).addEventListener('click', viewCat, false);
+            })
+            document.getElementById('newCat').addEventListener('click', addCatDialogue, false);
+        });
 }
 
 function viewCat() {
     const index = this.getAttribute('data-cardRef');
     appState.screen = { id: 'catBrowser', args: [index] };
     console.log(deck.cards[index]);
-    render.cardView.cards(deck.cards[index]);
+    render.cardView.cards(deck.cards[index], index)
+        .then(function() {
+            deck.cards[index].items.forEach((card, i) => {
+                document.getElementById(`edit${i}`).addEventListener('click', delCardDialogue, false);
+            })
+            document.getElementById('newCat').addEventListener('click', addCardDialogue, false)
+            document.getElementById('delCat').addEventListener('click', delCatDialogue, false)
+        });
+}
+
+function addCatDialogue() {
+    appState.screen = { id: 'addCat', args: [] };
+    render.cardBotomButton(`<textarea class="cardTitle" id="catValue" placeholder="Enter text here"></textarea>`, `<textarea class="cardContent" id="itemValue" placeholder="Enter text here"></textarea>`, `<button id='startBtn'>Add Card</button>`)
+        .then(document.getElementById('startBtn').addEventListener('click', doAddCat, false));
+}
+
+function delCatDialogue() {
+    console.log("del cat");
+    const index = this.getAttribute('data-catRef');
+    console.log("Index:" + index);
+    appState.screen = { id: 'addCat', args: [] };
+    render.cardView.delCat(index)
+        .then(document.getElementById('delCard').addEventListener('click', doDelCat, false))
+}
+
+function addCardDialogue() {
+    const index = this.getAttribute('data-catRef');
+    appState.screen = { id: 'addCat', args: [] };
+    render.cardBotomButton(deck.cards[index].category, `<textarea class="cardContent" id="itemValue" placeholder="Enter text here"></textarea>`, `<button id='startBtn' data-catRef=${index}>Add Card</button>`)
+        .then(document.getElementById('startBtn').addEventListener('click', doAddCard, false));
+}
+
+function delCardDialogue() {
+    catI = this.getAttribute('data-catRef');
+    cardI = this.getAttribute('data-cardRef');
+    render.cardView.delCard(catI, cardI)
+        .then(document.getElementById('delCard').addEventListener('click', doDelCard, false));
 }
 
 function showStartMenu() {

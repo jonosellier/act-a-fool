@@ -133,27 +133,44 @@ const render = {
         </div>
     </div>
     `,
-        attributions: `` //TODO: add in
+        settings: `
+        <h2>Attributions</h2>
+        <h4><ul>
+        <li>Built with Apache Cordova</li>
+        <li>Hosted on Heroku</li>
+        <li>Logo By Penelope Sellier</li>
+        </ul></h4>
+        <h2>Settings</h2>
+        <p>Reset the App and return the deck to its default state</p>
+        <div id="reset" class="cardViewContainer"><p>Reset App</p></div>
+      `
     },
 
     cardView: {
         categories: async(deck) => {
             let categoryHTML = ``;
             deck.cards.forEach((card, i) => {
-                categoryHTML += `<div id="view${i}" class="cardViewContainer" data-cardRef="${i}"><div class="rhs"><button id="edit${i}">&vellip;</button></div><p>${card.category}</p></div>`;
+                categoryHTML += `<div id="view${i}" class="cardViewContainer" data-cardRef="${i}"><p>${card.category}</p></div>`;
             })
             categoryHTML += `<div id="newCat" class="cardViewContainer"><p>Add New Category</p></div>`;
             document.getElementById("appContent").innerHTML = `<h2>Browse Categories</h2>` + categoryHTML;
         },
-        cards: async(cat) => {
+        cards: async(cat, index) => {
             console.log(cat);
             let categoryHTML = ``;
             cat.items.forEach((item, i) => {
-                categoryHTML += `<div id="view${i}" class="cardViewContainer cv-tall"><div class="rhs"><button id="edit${i}">&vellip;</button></div><p>${item}<p></div>`;
+                categoryHTML += `<div id="view${i}" class="cardViewContainer cv-tall"><div class="rhs"><button id="edit${i}" data-catRef="${index}" data-cardRef="${i}">&vellip;</button></div><p>${item}<p></div>`;
             })
-            categoryHTML += `<div id="newCat" class="cardViewContainer"><p>Add New Card</p></div>`;
+            categoryHTML += `<div id="newCat" class="cardViewContainer" data-catRef="${index}"><p>Add New Card</p></div>`;
+            categoryHTML += `<div id="delCat" class="cardViewContainer" data-catRef="${index}"><p>Delete this Category</p></div>`;
             document.getElementById("appContent").innerHTML = `<h2>${cat.category}</h2>` + categoryHTML;
         },
+        delCard: async(catIndex, cardIndex) => {
+            document.getElementById("appContent").innerHTML = `<h2>Do you want to delete this card?</h2><h4>${deck.cards[catIndex].items[cardIndex]}</h4><div id="delCard" class="cardViewContainer" data-catRef="${catIndex}" data-cardRef="${cardIndex}"><p>Delete Card</p></div>`;
+        },
+        delCat: async(catIndex) => {
+            document.getElementById("appContent").innerHTML = `<br><h4>Do you want to delete this category and all cards inside it?</h4><h2>${deck.cards[catIndex].category}</h2><div id="delCard" class="cardViewContainer" data-catRef="${catIndex}"><p>Delete Category</p></div>`;
+        }
     },
 
     static: {

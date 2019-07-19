@@ -43,7 +43,7 @@
     </script>
 </head>
 
-<body onload="render.timer(10)">
+<body>
     <div id="staticContent">
         <audio id="ticker" src="audio/ticker.mp3" type="audio/mpeg" loop preload="auto">Your browser does not support the audio element.</audio>
         <audio id="buzzer" src="audio/buzzer.mp3" type="audio/mpeg" preload="auto">Your browser does not support the audio element.</audio>
@@ -56,10 +56,12 @@
     </div>
     <div id="appContent">
         <div id="card">
-            <h2>Players</h2>
+            <h2><textarea class="cardTitle" id="catValue" placeholder="Enter text here"></textarea></h2>
             <div id="drawContainer">
-                <div id="playerContainer"></div>
-                <div class="bottom"><input type="text" id="newPlayer"> <button class="inlineBtn" id="addPlayerBtn">Add</button><br><button id="startBtn" style="background-color: rgb(153, 153, 153);">3 more players</button></div>
+                <div id="playerContainer">
+                    <textarea class="cardContent" id="catValue" placeholder="Enter text here"></textarea>
+                </div>
+                <div class="bottom"><button id='startBtn'>Add Card</button></div>
             </div>
         </div>
     </div>
